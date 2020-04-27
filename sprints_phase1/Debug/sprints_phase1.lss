@@ -1,0 +1,498 @@
+
+sprints_phase1.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000322  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .stab         000005ac  00000000  00000000  00000378  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  2 .stabstr      000003fd  00000000  00000000  00000924  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 86 01 	call	0x30c	; 0x30c <main>
+  64:	0c 94 8f 01 	jmp	0x31e	; 0x31e <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <Motor_init>:
+#include "motor.h"
+
+void Motor_init(void)
+{
+  6c:	df 93       	push	r29
+  6e:	cf 93       	push	r28
+  70:	cd b7       	in	r28, 0x3d	; 61
+  72:	de b7       	in	r29, 0x3e	; 62
+	SET_BIT(DDRD, Motor1_dir1);
+  74:	a1 e3       	ldi	r26, 0x31	; 49
+  76:	b0 e0       	ldi	r27, 0x00	; 0
+  78:	e1 e3       	ldi	r30, 0x31	; 49
+  7a:	f0 e0       	ldi	r31, 0x00	; 0
+  7c:	80 81       	ld	r24, Z
+  7e:	84 60       	ori	r24, 0x04	; 4
+  80:	8c 93       	st	X, r24
+	SET_BIT(DDRD, Motor1_dir2);
+  82:	a1 e3       	ldi	r26, 0x31	; 49
+  84:	b0 e0       	ldi	r27, 0x00	; 0
+  86:	e1 e3       	ldi	r30, 0x31	; 49
+  88:	f0 e0       	ldi	r31, 0x00	; 0
+  8a:	80 81       	ld	r24, Z
+  8c:	88 60       	ori	r24, 0x08	; 8
+  8e:	8c 93       	st	X, r24
+	SET_BIT(DDRD, Motor1_EN);
+  90:	a1 e3       	ldi	r26, 0x31	; 49
+  92:	b0 e0       	ldi	r27, 0x00	; 0
+  94:	e1 e3       	ldi	r30, 0x31	; 49
+  96:	f0 e0       	ldi	r31, 0x00	; 0
+  98:	80 81       	ld	r24, Z
+  9a:	80 61       	ori	r24, 0x10	; 16
+  9c:	8c 93       	st	X, r24
+	CLEAR_BIT(PORTD, Motor1_dir1);
+  9e:	a2 e3       	ldi	r26, 0x32	; 50
+  a0:	b0 e0       	ldi	r27, 0x00	; 0
+  a2:	e2 e3       	ldi	r30, 0x32	; 50
+  a4:	f0 e0       	ldi	r31, 0x00	; 0
+  a6:	80 81       	ld	r24, Z
+  a8:	8b 7f       	andi	r24, 0xFB	; 251
+  aa:	8c 93       	st	X, r24
+	CLEAR_BIT(PORTD, Motor1_dir2);
+  ac:	a2 e3       	ldi	r26, 0x32	; 50
+  ae:	b0 e0       	ldi	r27, 0x00	; 0
+  b0:	e2 e3       	ldi	r30, 0x32	; 50
+  b2:	f0 e0       	ldi	r31, 0x00	; 0
+  b4:	80 81       	ld	r24, Z
+  b6:	87 7f       	andi	r24, 0xF7	; 247
+  b8:	8c 93       	st	X, r24
+	SET_BIT(PORTD, Motor1_EN);
+  ba:	a2 e3       	ldi	r26, 0x32	; 50
+  bc:	b0 e0       	ldi	r27, 0x00	; 0
+  be:	e2 e3       	ldi	r30, 0x32	; 50
+  c0:	f0 e0       	ldi	r31, 0x00	; 0
+  c2:	80 81       	ld	r24, Z
+  c4:	80 61       	ori	r24, 0x10	; 16
+  c6:	8c 93       	st	X, r24
+	SET_BIT(DDRD, Motor2_dir1);
+  c8:	a1 e3       	ldi	r26, 0x31	; 49
+  ca:	b0 e0       	ldi	r27, 0x00	; 0
+  cc:	e1 e3       	ldi	r30, 0x31	; 49
+  ce:	f0 e0       	ldi	r31, 0x00	; 0
+  d0:	80 81       	ld	r24, Z
+  d2:	80 64       	ori	r24, 0x40	; 64
+  d4:	8c 93       	st	X, r24
+	SET_BIT(DDRD, Motor2_dir2);
+  d6:	a1 e3       	ldi	r26, 0x31	; 49
+  d8:	b0 e0       	ldi	r27, 0x00	; 0
+  da:	e1 e3       	ldi	r30, 0x31	; 49
+  dc:	f0 e0       	ldi	r31, 0x00	; 0
+  de:	80 81       	ld	r24, Z
+  e0:	80 68       	ori	r24, 0x80	; 128
+  e2:	8c 93       	st	X, r24
+	SET_BIT(DDRD, Motor2_EN);
+  e4:	a1 e3       	ldi	r26, 0x31	; 49
+  e6:	b0 e0       	ldi	r27, 0x00	; 0
+  e8:	e1 e3       	ldi	r30, 0x31	; 49
+  ea:	f0 e0       	ldi	r31, 0x00	; 0
+  ec:	80 81       	ld	r24, Z
+  ee:	80 62       	ori	r24, 0x20	; 32
+  f0:	8c 93       	st	X, r24
+	CLEAR_BIT(PORTD, Motor2_dir1);
+  f2:	a2 e3       	ldi	r26, 0x32	; 50
+  f4:	b0 e0       	ldi	r27, 0x00	; 0
+  f6:	e2 e3       	ldi	r30, 0x32	; 50
+  f8:	f0 e0       	ldi	r31, 0x00	; 0
+  fa:	80 81       	ld	r24, Z
+  fc:	8f 7b       	andi	r24, 0xBF	; 191
+  fe:	8c 93       	st	X, r24
+	CLEAR_BIT(PORTD, Motor2_dir2);
+ 100:	a2 e3       	ldi	r26, 0x32	; 50
+ 102:	b0 e0       	ldi	r27, 0x00	; 0
+ 104:	e2 e3       	ldi	r30, 0x32	; 50
+ 106:	f0 e0       	ldi	r31, 0x00	; 0
+ 108:	80 81       	ld	r24, Z
+ 10a:	8f 77       	andi	r24, 0x7F	; 127
+ 10c:	8c 93       	st	X, r24
+	SET_BIT(PORTD, Motor2_EN);
+ 10e:	a2 e3       	ldi	r26, 0x32	; 50
+ 110:	b0 e0       	ldi	r27, 0x00	; 0
+ 112:	e2 e3       	ldi	r30, 0x32	; 50
+ 114:	f0 e0       	ldi	r31, 0x00	; 0
+ 116:	80 81       	ld	r24, Z
+ 118:	80 62       	ori	r24, 0x20	; 32
+ 11a:	8c 93       	st	X, r24
+}
+ 11c:	cf 91       	pop	r28
+ 11e:	df 91       	pop	r29
+ 120:	08 95       	ret
+
+00000122 <Motor_move_forward>:
+
+void Motor_move_forward(void)
+{
+ 122:	df 93       	push	r29
+ 124:	cf 93       	push	r28
+ 126:	cd b7       	in	r28, 0x3d	; 61
+ 128:	de b7       	in	r29, 0x3e	; 62
+	CLEAR_BIT(PORTD, Motor1_dir1);
+ 12a:	a2 e3       	ldi	r26, 0x32	; 50
+ 12c:	b0 e0       	ldi	r27, 0x00	; 0
+ 12e:	e2 e3       	ldi	r30, 0x32	; 50
+ 130:	f0 e0       	ldi	r31, 0x00	; 0
+ 132:	80 81       	ld	r24, Z
+ 134:	8b 7f       	andi	r24, 0xFB	; 251
+ 136:	8c 93       	st	X, r24
+	SET_BIT(PORTD, Motor1_dir2);
+ 138:	a2 e3       	ldi	r26, 0x32	; 50
+ 13a:	b0 e0       	ldi	r27, 0x00	; 0
+ 13c:	e2 e3       	ldi	r30, 0x32	; 50
+ 13e:	f0 e0       	ldi	r31, 0x00	; 0
+ 140:	80 81       	ld	r24, Z
+ 142:	88 60       	ori	r24, 0x08	; 8
+ 144:	8c 93       	st	X, r24
+	SET_BIT(PORTD, Motor2_dir1);
+ 146:	a2 e3       	ldi	r26, 0x32	; 50
+ 148:	b0 e0       	ldi	r27, 0x00	; 0
+ 14a:	e2 e3       	ldi	r30, 0x32	; 50
+ 14c:	f0 e0       	ldi	r31, 0x00	; 0
+ 14e:	80 81       	ld	r24, Z
+ 150:	80 64       	ori	r24, 0x40	; 64
+ 152:	8c 93       	st	X, r24
+	CLEAR_BIT(PORTD, Motor2_dir2);
+ 154:	a2 e3       	ldi	r26, 0x32	; 50
+ 156:	b0 e0       	ldi	r27, 0x00	; 0
+ 158:	e2 e3       	ldi	r30, 0x32	; 50
+ 15a:	f0 e0       	ldi	r31, 0x00	; 0
+ 15c:	80 81       	ld	r24, Z
+ 15e:	8f 77       	andi	r24, 0x7F	; 127
+ 160:	8c 93       	st	X, r24
+}
+ 162:	cf 91       	pop	r28
+ 164:	df 91       	pop	r29
+ 166:	08 95       	ret
+
+00000168 <Motor_move_backward>:
+
+void Motor_move_backward(void)
+{
+ 168:	df 93       	push	r29
+ 16a:	cf 93       	push	r28
+ 16c:	cd b7       	in	r28, 0x3d	; 61
+ 16e:	de b7       	in	r29, 0x3e	; 62
+	SET_BIT(PORTD, Motor1_dir1);
+ 170:	a2 e3       	ldi	r26, 0x32	; 50
+ 172:	b0 e0       	ldi	r27, 0x00	; 0
+ 174:	e2 e3       	ldi	r30, 0x32	; 50
+ 176:	f0 e0       	ldi	r31, 0x00	; 0
+ 178:	80 81       	ld	r24, Z
+ 17a:	84 60       	ori	r24, 0x04	; 4
+ 17c:	8c 93       	st	X, r24
+	CLEAR_BIT(PORTD, Motor1_dir2);
+ 17e:	a2 e3       	ldi	r26, 0x32	; 50
+ 180:	b0 e0       	ldi	r27, 0x00	; 0
+ 182:	e2 e3       	ldi	r30, 0x32	; 50
+ 184:	f0 e0       	ldi	r31, 0x00	; 0
+ 186:	80 81       	ld	r24, Z
+ 188:	87 7f       	andi	r24, 0xF7	; 247
+ 18a:	8c 93       	st	X, r24
+	CLEAR_BIT(PORTD, Motor2_dir1);
+ 18c:	a2 e3       	ldi	r26, 0x32	; 50
+ 18e:	b0 e0       	ldi	r27, 0x00	; 0
+ 190:	e2 e3       	ldi	r30, 0x32	; 50
+ 192:	f0 e0       	ldi	r31, 0x00	; 0
+ 194:	80 81       	ld	r24, Z
+ 196:	8f 7b       	andi	r24, 0xBF	; 191
+ 198:	8c 93       	st	X, r24
+	SET_BIT(PORTD, Motor2_dir2);
+ 19a:	a2 e3       	ldi	r26, 0x32	; 50
+ 19c:	b0 e0       	ldi	r27, 0x00	; 0
+ 19e:	e2 e3       	ldi	r30, 0x32	; 50
+ 1a0:	f0 e0       	ldi	r31, 0x00	; 0
+ 1a2:	80 81       	ld	r24, Z
+ 1a4:	80 68       	ori	r24, 0x80	; 128
+ 1a6:	8c 93       	st	X, r24
+}
+ 1a8:	cf 91       	pop	r28
+ 1aa:	df 91       	pop	r29
+ 1ac:	08 95       	ret
+
+000001ae <Motor_turn_right>:
+
+void Motor_turn_right(void)
+{
+ 1ae:	df 93       	push	r29
+ 1b0:	cf 93       	push	r28
+ 1b2:	cd b7       	in	r28, 0x3d	; 61
+ 1b4:	de b7       	in	r29, 0x3e	; 62
+	SET_BIT(PORTD, Motor1_dir1);
+ 1b6:	a2 e3       	ldi	r26, 0x32	; 50
+ 1b8:	b0 e0       	ldi	r27, 0x00	; 0
+ 1ba:	e2 e3       	ldi	r30, 0x32	; 50
+ 1bc:	f0 e0       	ldi	r31, 0x00	; 0
+ 1be:	80 81       	ld	r24, Z
+ 1c0:	84 60       	ori	r24, 0x04	; 4
+ 1c2:	8c 93       	st	X, r24
+	CLEAR_BIT(PORTD, Motor1_dir2);
+ 1c4:	a2 e3       	ldi	r26, 0x32	; 50
+ 1c6:	b0 e0       	ldi	r27, 0x00	; 0
+ 1c8:	e2 e3       	ldi	r30, 0x32	; 50
+ 1ca:	f0 e0       	ldi	r31, 0x00	; 0
+ 1cc:	80 81       	ld	r24, Z
+ 1ce:	87 7f       	andi	r24, 0xF7	; 247
+ 1d0:	8c 93       	st	X, r24
+	SET_BIT(PORTD, Motor2_dir1);
+ 1d2:	a2 e3       	ldi	r26, 0x32	; 50
+ 1d4:	b0 e0       	ldi	r27, 0x00	; 0
+ 1d6:	e2 e3       	ldi	r30, 0x32	; 50
+ 1d8:	f0 e0       	ldi	r31, 0x00	; 0
+ 1da:	80 81       	ld	r24, Z
+ 1dc:	80 64       	ori	r24, 0x40	; 64
+ 1de:	8c 93       	st	X, r24
+	CLEAR_BIT(PORTD, Motor2_dir2);
+ 1e0:	a2 e3       	ldi	r26, 0x32	; 50
+ 1e2:	b0 e0       	ldi	r27, 0x00	; 0
+ 1e4:	e2 e3       	ldi	r30, 0x32	; 50
+ 1e6:	f0 e0       	ldi	r31, 0x00	; 0
+ 1e8:	80 81       	ld	r24, Z
+ 1ea:	8f 77       	andi	r24, 0x7F	; 127
+ 1ec:	8c 93       	st	X, r24
+}
+ 1ee:	cf 91       	pop	r28
+ 1f0:	df 91       	pop	r29
+ 1f2:	08 95       	ret
+
+000001f4 <Motor_turn_left>:
+
+void Motor_turn_left(void)
+{
+ 1f4:	df 93       	push	r29
+ 1f6:	cf 93       	push	r28
+ 1f8:	cd b7       	in	r28, 0x3d	; 61
+ 1fa:	de b7       	in	r29, 0x3e	; 62
+	CLEAR_BIT(PORTD, Motor1_dir1);
+ 1fc:	a2 e3       	ldi	r26, 0x32	; 50
+ 1fe:	b0 e0       	ldi	r27, 0x00	; 0
+ 200:	e2 e3       	ldi	r30, 0x32	; 50
+ 202:	f0 e0       	ldi	r31, 0x00	; 0
+ 204:	80 81       	ld	r24, Z
+ 206:	8b 7f       	andi	r24, 0xFB	; 251
+ 208:	8c 93       	st	X, r24
+	SET_BIT(PORTD, Motor1_dir2);
+ 20a:	a2 e3       	ldi	r26, 0x32	; 50
+ 20c:	b0 e0       	ldi	r27, 0x00	; 0
+ 20e:	e2 e3       	ldi	r30, 0x32	; 50
+ 210:	f0 e0       	ldi	r31, 0x00	; 0
+ 212:	80 81       	ld	r24, Z
+ 214:	88 60       	ori	r24, 0x08	; 8
+ 216:	8c 93       	st	X, r24
+	CLEAR_BIT(PORTD, Motor2_dir1);
+ 218:	a2 e3       	ldi	r26, 0x32	; 50
+ 21a:	b0 e0       	ldi	r27, 0x00	; 0
+ 21c:	e2 e3       	ldi	r30, 0x32	; 50
+ 21e:	f0 e0       	ldi	r31, 0x00	; 0
+ 220:	80 81       	ld	r24, Z
+ 222:	8f 7b       	andi	r24, 0xBF	; 191
+ 224:	8c 93       	st	X, r24
+	SET_BIT(PORTD, Motor2_dir2);
+ 226:	a2 e3       	ldi	r26, 0x32	; 50
+ 228:	b0 e0       	ldi	r27, 0x00	; 0
+ 22a:	e2 e3       	ldi	r30, 0x32	; 50
+ 22c:	f0 e0       	ldi	r31, 0x00	; 0
+ 22e:	80 81       	ld	r24, Z
+ 230:	80 68       	ori	r24, 0x80	; 128
+ 232:	8c 93       	st	X, r24
+}
+ 234:	cf 91       	pop	r28
+ 236:	df 91       	pop	r29
+ 238:	08 95       	ret
+
+0000023a <Motor_slide_right>:
+
+void Motor_slide_right(void)
+{
+ 23a:	df 93       	push	r29
+ 23c:	cf 93       	push	r28
+ 23e:	cd b7       	in	r28, 0x3d	; 61
+ 240:	de b7       	in	r29, 0x3e	; 62
+	CLEAR_BIT(PORTD, Motor1_dir1);
+ 242:	a2 e3       	ldi	r26, 0x32	; 50
+ 244:	b0 e0       	ldi	r27, 0x00	; 0
+ 246:	e2 e3       	ldi	r30, 0x32	; 50
+ 248:	f0 e0       	ldi	r31, 0x00	; 0
+ 24a:	80 81       	ld	r24, Z
+ 24c:	8b 7f       	andi	r24, 0xFB	; 251
+ 24e:	8c 93       	st	X, r24
+	CLEAR_BIT(PORTD, Motor1_dir2);
+ 250:	a2 e3       	ldi	r26, 0x32	; 50
+ 252:	b0 e0       	ldi	r27, 0x00	; 0
+ 254:	e2 e3       	ldi	r30, 0x32	; 50
+ 256:	f0 e0       	ldi	r31, 0x00	; 0
+ 258:	80 81       	ld	r24, Z
+ 25a:	87 7f       	andi	r24, 0xF7	; 247
+ 25c:	8c 93       	st	X, r24
+	CLEAR_BIT(PORTD, Motor2_dir1);
+ 25e:	a2 e3       	ldi	r26, 0x32	; 50
+ 260:	b0 e0       	ldi	r27, 0x00	; 0
+ 262:	e2 e3       	ldi	r30, 0x32	; 50
+ 264:	f0 e0       	ldi	r31, 0x00	; 0
+ 266:	80 81       	ld	r24, Z
+ 268:	8f 7b       	andi	r24, 0xBF	; 191
+ 26a:	8c 93       	st	X, r24
+	SET_BIT(PORTD, Motor2_dir2);
+ 26c:	a2 e3       	ldi	r26, 0x32	; 50
+ 26e:	b0 e0       	ldi	r27, 0x00	; 0
+ 270:	e2 e3       	ldi	r30, 0x32	; 50
+ 272:	f0 e0       	ldi	r31, 0x00	; 0
+ 274:	80 81       	ld	r24, Z
+ 276:	80 68       	ori	r24, 0x80	; 128
+ 278:	8c 93       	st	X, r24
+}
+ 27a:	cf 91       	pop	r28
+ 27c:	df 91       	pop	r29
+ 27e:	08 95       	ret
+
+00000280 <Motor_slide_left>:
+
+void Motor_slide_left(void)
+{
+ 280:	df 93       	push	r29
+ 282:	cf 93       	push	r28
+ 284:	cd b7       	in	r28, 0x3d	; 61
+ 286:	de b7       	in	r29, 0x3e	; 62
+
+	CLEAR_BIT(PORTD, Motor1_dir1);
+ 288:	a2 e3       	ldi	r26, 0x32	; 50
+ 28a:	b0 e0       	ldi	r27, 0x00	; 0
+ 28c:	e2 e3       	ldi	r30, 0x32	; 50
+ 28e:	f0 e0       	ldi	r31, 0x00	; 0
+ 290:	80 81       	ld	r24, Z
+ 292:	8b 7f       	andi	r24, 0xFB	; 251
+ 294:	8c 93       	st	X, r24
+	SET_BIT(PORTD, Motor1_dir2);
+ 296:	a2 e3       	ldi	r26, 0x32	; 50
+ 298:	b0 e0       	ldi	r27, 0x00	; 0
+ 29a:	e2 e3       	ldi	r30, 0x32	; 50
+ 29c:	f0 e0       	ldi	r31, 0x00	; 0
+ 29e:	80 81       	ld	r24, Z
+ 2a0:	88 60       	ori	r24, 0x08	; 8
+ 2a2:	8c 93       	st	X, r24
+	CLEAR_BIT(PORTD, Motor2_dir1);
+ 2a4:	a2 e3       	ldi	r26, 0x32	; 50
+ 2a6:	b0 e0       	ldi	r27, 0x00	; 0
+ 2a8:	e2 e3       	ldi	r30, 0x32	; 50
+ 2aa:	f0 e0       	ldi	r31, 0x00	; 0
+ 2ac:	80 81       	ld	r24, Z
+ 2ae:	8f 7b       	andi	r24, 0xBF	; 191
+ 2b0:	8c 93       	st	X, r24
+	CLEAR_BIT(PORTD, Motor2_dir2);
+ 2b2:	a2 e3       	ldi	r26, 0x32	; 50
+ 2b4:	b0 e0       	ldi	r27, 0x00	; 0
+ 2b6:	e2 e3       	ldi	r30, 0x32	; 50
+ 2b8:	f0 e0       	ldi	r31, 0x00	; 0
+ 2ba:	80 81       	ld	r24, Z
+ 2bc:	8f 77       	andi	r24, 0x7F	; 127
+ 2be:	8c 93       	st	X, r24
+}
+ 2c0:	cf 91       	pop	r28
+ 2c2:	df 91       	pop	r29
+ 2c4:	08 95       	ret
+
+000002c6 <Motor_stop>:
+
+void Motor_stop(void)
+{
+ 2c6:	df 93       	push	r29
+ 2c8:	cf 93       	push	r28
+ 2ca:	cd b7       	in	r28, 0x3d	; 61
+ 2cc:	de b7       	in	r29, 0x3e	; 62
+	CLEAR_BIT(PORTD, Motor1_dir1);
+ 2ce:	a2 e3       	ldi	r26, 0x32	; 50
+ 2d0:	b0 e0       	ldi	r27, 0x00	; 0
+ 2d2:	e2 e3       	ldi	r30, 0x32	; 50
+ 2d4:	f0 e0       	ldi	r31, 0x00	; 0
+ 2d6:	80 81       	ld	r24, Z
+ 2d8:	8b 7f       	andi	r24, 0xFB	; 251
+ 2da:	8c 93       	st	X, r24
+	CLEAR_BIT(PORTD, Motor1_dir2);
+ 2dc:	a2 e3       	ldi	r26, 0x32	; 50
+ 2de:	b0 e0       	ldi	r27, 0x00	; 0
+ 2e0:	e2 e3       	ldi	r30, 0x32	; 50
+ 2e2:	f0 e0       	ldi	r31, 0x00	; 0
+ 2e4:	80 81       	ld	r24, Z
+ 2e6:	87 7f       	andi	r24, 0xF7	; 247
+ 2e8:	8c 93       	st	X, r24
+	CLEAR_BIT(PORTD, Motor2_dir1);
+ 2ea:	a2 e3       	ldi	r26, 0x32	; 50
+ 2ec:	b0 e0       	ldi	r27, 0x00	; 0
+ 2ee:	e2 e3       	ldi	r30, 0x32	; 50
+ 2f0:	f0 e0       	ldi	r31, 0x00	; 0
+ 2f2:	80 81       	ld	r24, Z
+ 2f4:	8f 7b       	andi	r24, 0xBF	; 191
+ 2f6:	8c 93       	st	X, r24
+	CLEAR_BIT(PORTD, Motor2_dir2);
+ 2f8:	a2 e3       	ldi	r26, 0x32	; 50
+ 2fa:	b0 e0       	ldi	r27, 0x00	; 0
+ 2fc:	e2 e3       	ldi	r30, 0x32	; 50
+ 2fe:	f0 e0       	ldi	r31, 0x00	; 0
+ 300:	80 81       	ld	r24, Z
+ 302:	8f 77       	andi	r24, 0x7F	; 127
+ 304:	8c 93       	st	X, r24
+}
+ 306:	cf 91       	pop	r28
+ 308:	df 91       	pop	r29
+ 30a:	08 95       	ret
+
+0000030c <main>:
+ *      Author: Hatem
+ */
+#include "motor.h"
+
+int main()
+{
+ 30c:	df 93       	push	r29
+ 30e:	cf 93       	push	r28
+ 310:	cd b7       	in	r28, 0x3d	; 61
+ 312:	de b7       	in	r29, 0x3e	; 62
+	Motor_init();
+ 314:	0e 94 36 00 	call	0x6c	; 0x6c <Motor_init>
+	Motor_slide_left();
+ 318:	0e 94 40 01 	call	0x280	; 0x280 <Motor_slide_left>
+ 31c:	ff cf       	rjmp	.-2      	; 0x31c <main+0x10>
+
+0000031e <_exit>:
+ 31e:	f8 94       	cli
+
+00000320 <__stop_program>:
+ 320:	ff cf       	rjmp	.-2      	; 0x320 <__stop_program>
